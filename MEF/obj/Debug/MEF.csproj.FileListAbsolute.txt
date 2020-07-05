@@ -13,3 +13,13 @@ C:\Users\Enrique\Documents\Visual Studio 2017\Mis programas\Maquina de Estados F
 C:\Users\Enrique\Documents\Visual Studio 2017\Mis programas\Maquina de Estados Finitos\MEF\obj\Debug\MEF.csproj.GenerateResource.Cache
 C:\Users\Enrique\Documents\Visual Studio 2017\Mis programas\Maquina de Estados Finitos\MEF\obj\Debug\MEF.exe
 C:\Users\Enrique\Documents\Visual Studio 2017\Mis programas\Maquina de Estados Finitos\MEF\obj\Debug\MEF.pdb
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\bin\Debug\MEF.exe.config
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\bin\Debug\MEF.exe
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\bin\Debug\MEF.pdb
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.csprojAssemblyReference.cache
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.Form1.resources
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.csproj.GenerateResource.cache
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.csproj.CoreCompileInputs.cache
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.exe
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.pdb
+C:\Users\Boris\Documents\Repos\Juego-Maquina_Estados_Finitos\MEF\obj\Debug\MEF.Properties.Resources.resources

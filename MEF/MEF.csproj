@@ -94,9 +94,30 @@
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Content Include="App.ico" />
+    <None Include="Resources\died.wav" />
+    <None Include="Resources\victory.wav" />
+    <None Include="Resources\failed.wav" />
+    <None Include="Resources\gameover.wav" />
+    <None Include="Resources\energy.png" />
+    <None Include="Resources\grass_background.png" />
+    <None Include="Resources\grass_background.jpg" />
+    <None Include="Resources\raspberry.png" />
+    <None Include="Resources\strawberry.png" />
+    <None Include="Resources\apple.png" />
+    <None Include="Resources\battery.png" />
+    <Content Include="Resources\cherry.png" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

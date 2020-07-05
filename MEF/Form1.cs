@@ -25,7 +25,7 @@ namespace MEF
         // Objetos necesarios
         public S_objeto[] ListaObjetos = new S_objeto[10];
         public S_objeto MiBateria;
-
+        public bool gameState = true;
         public Form1()
         {
             //
@@ -51,12 +51,18 @@ namespace MEF
 
                 // Lo indicamos activo
                 ListaObjetos[n].activo = true;
+
+                // Seteamos la imagen
+                Bitmap[] imgResource = { Properties.Resources.apple, Properties.Resources.cherry, Properties.Resources.raspberry, Properties.Resources.strawberry };
+                int randomFruit = random.Next(imgResource.Length);
+                ListaObjetos[n].img = new Bitmap(imgResource[randomFruit]);
             }
 
             // Colocamos la bateria
             MiBateria.x = random.Next(0, 639);
             MiBateria.y = random.Next(0, 479);
             MiBateria.activo = true;
+            MiBateria.img = new Bitmap(Properties.Resources.battery);
 
             maquina.Inicializa(ref ListaObjetos, MiBateria);
 
@@ -141,6 +147,7 @@ namespace MEF
             // Form1
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.BackColor = System.Drawing.Color.YellowGreen;
             this.ClientSize = new System.Drawing.Size(692, 500);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
@@ -148,7 +155,6 @@ namespace MEF
             this.Text = "Maquina de estados finitos";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
-
         }
         #endregion
 
@@ -182,37 +188,76 @@ namespace MEF
             // Esta funcion es el handler del timer
             // Aqui tendremos la logica para actualizar nuestra maquina de estados
 
-            // Actualizamos a la maquina
-            maquina.Control();
+            if (gameState)
+            {
+                // Actualizamos a la maquina
+                maquina.Control();
 
-            // Mandamos a redibujar la pantalla
-            this.Invalidate();
+                // Mandamos a redibujar la pantalla
+
+                this.Invalidate();
+            }
         }
 
         private void Form1_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
             // Creamos la fuente y la brocha para el texto
             Font fuente = new Font("Arial", 16);
-            SolidBrush brocha = new SolidBrush(Color.Black);
-
-            // Dibujamos el robot
-            if (maquina.EstadoM == (int)CMaquina.estados.MUERTO)
-                e.Graphics.DrawRectangle(Pens.Black, maquina.CoordX - 4, maquina.CoordY - 4, 20, 20);
-            else
-                e.Graphics.DrawRectangle(Pens.Green, maquina.CoordX - 4, maquina.CoordY - 4, 20, 20);
+            SolidBrush brocha = new SolidBrush(Color.White);
+            SolidBrush brochaAmarilla = new SolidBrush(Color.Yellow);
+            SolidBrush brochaNegra = new SolidBrush(Color.Black);
 
             // Dibujamos los objetos
             for (int n = 0; n < 10; n++)
                 if (ListaObjetos[n].activo == true)
-                    e.Graphics.DrawRectangle(Pens.Indigo, ListaObjetos[n].x - 4, ListaObjetos[n].y - 4, 20, 20);
+                    e.Graphics.DrawImage(ListaObjetos[n].img, ListaObjetos[n].x - 4, ListaObjetos[n].y - 4, 20, 20);
 
             // Dibujamos la bateria
-            e.Graphics.DrawRectangle(Pens.IndianRed, MiBateria.x - 4, MiBateria.y - 4, 20, 20);
+            e.Graphics.DrawImage(MiBateria.img, MiBateria.x - 4, MiBateria.y - 4, 20, 20);
 
             // Indicamos el estado en que se encuentra la maquina
-            e.Graphics.DrawString("Estado -> " + maquina.EstadoM.ToString(), fuente, brocha, 10, 10);
+            e.Graphics.DrawString("Estado: " + maquina.EstadoM.ToString(), fuente, brocha, 10, 10);
 
+            // Indicamos la energia de la culebrita
+            e.Graphics.DrawImage(Properties.Resources.energy, this.Width - 130, 10, 20, 20);
+            e.Graphics.DrawRectangle(Pens.Yellow, this.Width-110, 12, 80, 10);
+            e.Graphics.FillRectangle(brochaAmarilla, this.Width - 110, 12, maquina.getEnergia/10, 10);           
 
+            // Dibujamos el robot
+            if (maquina.EstadoM == (int)CMaquina.estados.MUERTO)
+            {
+                e.Graphics.FillRectangle(brochaNegra, 0, 0, this.Width, this.Height);
+                e.Graphics.DrawString("YOU DIED", new Font("Times New Roman", 30), new SolidBrush(Color.Red), this.Width / 2 - 100, this.Height / 2 - 60);
+                // Sonamos un beep de la computadora
+                System.Media.SoundPlayer gameover = new System.Media.SoundPlayer(Properties.Resources.died);
+                gameover.Play();
+                gameState = false;
+            }
+            else
+                e.Graphics.DrawRectangle(Pens.Green, maquina.CoordX - 4, maquina.CoordY - 4, 20, 20);
+
+            switch(maquina.EstadoM)
+            {
+                case (int)CMaquina.estados.MUERTO:
+                    e.Graphics.FillRectangle(brochaNegra, 0, 0, this.Width, this.Height);
+                    e.Graphics.DrawString("YOU DIED", new Font("Times New Roman", 30), new SolidBrush(Color.Red), this.Width / 2 - 100, this.Height / 2 - 60);
+                    // Sonamos un beep de la computadora
+                    System.Media.SoundPlayer gameover = new System.Media.SoundPlayer(Properties.Resources.died);
+                    gameover.Play();
+                    gameState = false;
+                    break;
+
+                case (int)CMaquina.estados.ALEATORIO:
+                    System.Media.SoundPlayer winner = new System.Media.SoundPlayer(Properties.Resources.victory);
+                    winner.Play();
+                    gameState = false;
+                    break;
+
+                default:
+                    e.Graphics.DrawRectangle(Pens.Green, maquina.CoordX - 4, maquina.CoordY - 4, 20, 20);
+                    break;
+
+            }
         }
     }
 }

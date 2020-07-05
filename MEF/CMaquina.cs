@@ -1,5 +1,5 @@
 using System;
-
+using System.Drawing;
 
 namespace MEF
 {
@@ -7,7 +7,8 @@ namespace MEF
 	public struct S_objeto
 	{
 		public bool activo;	// Indica si el objeto es visible o no
-		public int x,y;		// Coordenadas del objeto
+		public int x,y;     // Coordenadas del objeto
+		public Bitmap img; // Imagen del objeto
 	}
 
 
@@ -59,6 +60,11 @@ namespace MEF
 		{
 			get {return Estado;}
 		}
+
+		public int getEnergia
+        {
+			get { return energia; }
+        }
 			
 		public CMaquina()
 		{
@@ -214,7 +220,6 @@ namespace MEF
 			y+=ny-1;
 
 			energia--;
-
 		}
 
 		public void IrBateria()
@@ -240,16 +245,13 @@ namespace MEF
 		public void Recargar()
 		{
 			// En esta funcion colocamos la logica del estado Recargar
-			energia=1000;
+			energia=800;
 
 		}
 
 		public void Muerto()
 		{
 			// En esta funcion colocamos la logica del estado Muerto
-
-			// Sonamos un beep de la computadora
-
 
 		}
 
