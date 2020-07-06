@@ -25,6 +25,7 @@ namespace MEF
         // Objetos necesarios
         public S_objeto[] ListaObjetos = new S_objeto[10];
         public S_objeto MiBateria;
+        public S_objeto MiCesta;
         public bool gameState = true;
         public Form1()
         {
@@ -206,6 +207,8 @@ namespace MEF
             SolidBrush brocha = new SolidBrush(Color.White);
             SolidBrush brochaAmarilla = new SolidBrush(Color.Yellow);
             SolidBrush brochaNegra = new SolidBrush(Color.Black);
+            MiCesta.activo = true;
+            MiCesta.img = new Bitmap(Properties.Resources.cesta);
 
             // Dibujamos los objetos
             for (int n = 0; n < 10; n++)
@@ -234,9 +237,9 @@ namespace MEF
                 gameState = false;
             }
             else
-                e.Graphics.DrawRectangle(Pens.Green, maquina.CoordX - 4, maquina.CoordY - 4, 20, 20);
+                e.Graphics.DrawImage(MiCesta.img, maquina.CoordX - 4, maquina.CoordY - 4);
 
-            switch(maquina.EstadoM)
+            switch (maquina.EstadoM)
             {
                 case (int)CMaquina.estados.MUERTO:
                     e.Graphics.FillRectangle(brochaNegra, 0, 0, this.Width, this.Height);
@@ -254,7 +257,7 @@ namespace MEF
                     break;
 
                 default:
-                    e.Graphics.DrawRectangle(Pens.Green, maquina.CoordX - 4, maquina.CoordY - 4, 20, 20);
+                    e.Graphics.DrawImage(MiCesta.img, maquina.CoordX - 4, maquina.CoordY - 4);
                     break;
 
             }

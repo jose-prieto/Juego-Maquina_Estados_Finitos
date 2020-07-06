@@ -111,6 +111,7 @@
     <None Include="Resources\strawberry.png" />
     <None Include="Resources\apple.png" />
     <None Include="Resources\battery.png" />
+    <None Include="Resources\cesta.png" />
     <Content Include="Resources\cherry.png" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
