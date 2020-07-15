@@ -326,7 +326,7 @@ namespace MEF
                 case (int)CMaquina.estados.RECARGAR:
                     e.Graphics.DrawString("Estado: Recargando", fuente, brocha, 10, 10);
                     System.Media.SoundPlayer charging = new System.Media.SoundPlayer(Properties.Resources.charging);
-                    charging.Play();
+                    charging.PlaySync();
                     play_low_battery = true;
                     break;
 
