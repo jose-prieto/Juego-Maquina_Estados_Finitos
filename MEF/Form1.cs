@@ -24,7 +24,7 @@ namespace MEF
 
         // Objetos necesarios
         public S_objeto[] ListaObjetos = new S_objeto[10];
-        public S_objeto MiBateria;
+        public S_objeto[] MiBateria = new S_objeto[1];
         public S_objeto MiCesta;
         public bool gameState = true;
         public bool play_low_battery = true;
@@ -50,8 +50,8 @@ namespace MEF
             {
                 // Colocamos las coordenadas
                 ListaObjetos[n].x = random.Next(0, 639);
-                ListaObjetos[n].y = random.Next(0, 479);
-
+                ListaObjetos[n].y = random.Next(50, 479);
+                check_exist(ListaObjetos, random, n);
                 // Lo indicamos activo
                 ListaObjetos[n].activo = true;
 
@@ -62,16 +62,37 @@ namespace MEF
             }
 
             // Colocamos la bateria
-            MiBateria.x = random.Next(0, 639);
-            MiBateria.y = random.Next(0, 479);
-            MiBateria.activo = true;
-            MiBateria.img = new Bitmap(Properties.Resources.battery);
+            MiBateria[0].x = random.Next(0, 639);
+            MiBateria[0].y = random.Next(50, 479);
+            check_exist(MiBateria, random, 0);
+            MiBateria[0].activo = true;
+            MiBateria[0].img = new Bitmap(Properties.Resources.battery);
 
             maquina.Inicializa(ref ListaObjetos, MiBateria);
 
 
         }
 
+        private void check_exist(S_objeto[] ListaObjetos, Random random, int n)
+        {
+            bool exist = false;
+
+            while (!exist)
+            {
+                for (int k = 0; k < n + 1; k++)
+                {
+                    if (ListaObjetos[k].x - 30 <= ListaObjetos[n].x && ListaObjetos[n].x <= ListaObjetos[k].x + 30
+                        && ListaObjetos[k].y - 30 <= ListaObjetos[n].y && ListaObjetos[n].y <= ListaObjetos[k].y + 30)
+                    {
+                        ListaObjetos[n].x = random.Next(0, 639);
+                        ListaObjetos[n].y = random.Next(50, 479);
+                    }
+                    else
+                        exist = true;
+                }
+                exist = true;
+            }
+        }
         
         protected override void Dispose(bool disposing)
         {
@@ -224,7 +245,7 @@ namespace MEF
             }
 
             // Dibujamos la bateria
-            e.Graphics.DrawImage(MiBateria.img, MiBateria.x - 4, MiBateria.y - 4, 20, 20);
+            e.Graphics.DrawImage(MiBateria[0].img, MiBateria[0].x - 4, MiBateria[0].y - 4, 20, 20);
 
             
 
@@ -271,6 +292,7 @@ namespace MEF
                     break;
 
                 case (int)CMaquina.estados.ALEATORIO:
+                    e.Graphics.DrawString("Estado: Ganador", fuente, brocha, 10, 10);
                     System.Media.SoundPlayer winner = new System.Media.SoundPlayer(Properties.Resources.victory);
                     winner.Play();
                     gameState = false;

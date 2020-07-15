@@ -37,7 +37,7 @@ namespace MEF
 
 		// Arreglo para guardar una copia de los objetos
 		private S_objeto[] objetos = new S_objeto[10];
-		private S_objeto bateria;
+		private S_objeto[] bateria = new S_objeto[0];
 
 		// Variable del indice del objeto que buscamos
 		private int indice;
@@ -79,7 +79,7 @@ namespace MEF
 			energia=800;
 		}
 
-		public void Inicializa(ref S_objeto [] Pobjetos, S_objeto Pbateria)
+		public void Inicializa(ref S_objeto [] Pobjetos, S_objeto [] Pbateria)
 		{
 			// Colocamos una copia de los objetos y la bateria
 			// para pode trabajar internamente con la informacion
@@ -131,7 +131,7 @@ namespace MEF
 					IrBateria();
 
 					// Verificamos por transicion
-					if(x==bateria.x && y==bateria.y)				
+					if(x==bateria[0].x && y==bateria[0].y)				
 						Estado=(int)estados.RECARGAR;
 
 					if(energia==0)
@@ -227,14 +227,14 @@ namespace MEF
 			// En esta funcion colocamos la logica del estado Ir Bateria
 
 			// Nos dirigimos hacia la bateria
-			if(x<bateria.x)
+			if(x<bateria[0].x)
 				x++;
-			else if(x>bateria.x)
+			else if(x>bateria[0].x)
 				x--;
 
-			if(y<bateria.y)
+			if(y<bateria[0].y)
 				y++;
-			else if(y>bateria.y)
+			else if(y>bateria[0].y)
 				y--;
 
 			// Disminuimos la energia
