@@ -207,13 +207,19 @@ namespace MEF
             SolidBrush brocha = new SolidBrush(Color.White);
             SolidBrush brochaAmarilla = new SolidBrush(Color.Yellow);
             SolidBrush brochaNegra = new SolidBrush(Color.Black);
+            SolidBrush brochaRoja = new SolidBrush(Color.Red);
+            SolidBrush brochaNaranja = new SolidBrush(Color.Orange);
             MiCesta.activo = true;
             MiCesta.img = new Bitmap(Properties.Resources.cesta);
 
             // Dibujamos los objetos
             for (int n = 0; n < 10; n++)
+            {
                 if (ListaObjetos[n].activo == true)
                     e.Graphics.DrawImage(ListaObjetos[n].img, ListaObjetos[n].x - 4, ListaObjetos[n].y - 4, 20, 20);
+                else
+                    e.Graphics.DrawImage(Properties.Resources.dry_tree, ListaObjetos[n].x - 4, ListaObjetos[n].y - 4, 20, 20);
+            }
 
             // Dibujamos la bateria
             e.Graphics.DrawImage(MiBateria.img, MiBateria.x - 4, MiBateria.y - 4, 20, 20);
@@ -223,8 +229,21 @@ namespace MEF
 
             // Indicamos la energia de la culebrita
             e.Graphics.DrawImage(Properties.Resources.energy, this.Width - 130, 10, 20, 20);
-            e.Graphics.DrawRectangle(Pens.Yellow, this.Width-110, 12, 80, 10);
-            e.Graphics.FillRectangle(brochaAmarilla, this.Width - 110, 12, maquina.getEnergia/10, 10);           
+            if (maquina.getEnergia <= 200)
+            {
+                e.Graphics.DrawRectangle(Pens.Red, this.Width - 110, 12, 80, 10);
+                e.Graphics.FillRectangle(brochaRoja, this.Width - 110, 12, maquina.getEnergia / 10, 10);
+            }
+            else if (maquina.getEnergia <= 400)
+            {
+                e.Graphics.DrawRectangle(Pens.Orange, this.Width - 110, 12, 80, 10);
+                e.Graphics.FillRectangle(brochaNaranja, this.Width - 110, 12, maquina.getEnergia / 10, 10);
+            }
+            else
+            {
+                e.Graphics.DrawRectangle(Pens.Yellow, this.Width - 110, 12, 80, 10);
+                e.Graphics.FillRectangle(brochaAmarilla, this.Width - 110, 12, maquina.getEnergia / 10, 10);
+            }
 
             // Dibujamos el robot
             if (maquina.EstadoM == (int)CMaquina.estados.MUERTO)

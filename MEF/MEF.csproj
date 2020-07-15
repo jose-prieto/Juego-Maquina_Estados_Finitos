@@ -100,6 +100,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="App.ico" />
+    <None Include="Resources\dry-tree.png" />
     <None Include="Resources\died.wav" />
     <None Include="Resources\victory.wav" />
     <None Include="Resources\failed.wav" />
@@ -119,6 +120,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
