@@ -27,6 +27,8 @@ namespace MEF
         public S_objeto MiBateria;
         public S_objeto MiCesta;
         public bool gameState = true;
+        public bool play_low_battery = true;
+        public bool play_found = false;
         public Form1()
         {
             //
@@ -224,8 +226,7 @@ namespace MEF
             // Dibujamos la bateria
             e.Graphics.DrawImage(MiBateria.img, MiBateria.x - 4, MiBateria.y - 4, 20, 20);
 
-            // Indicamos el estado en que se encuentra la maquina
-            e.Graphics.DrawString("Estado: " + maquina.EstadoM.ToString(), fuente, brocha, 10, 10);
+            
 
             // Indicamos la energia de la culebrita
             e.Graphics.DrawImage(Properties.Resources.energy, this.Width - 130, 10, 20, 20);
@@ -273,6 +274,38 @@ namespace MEF
                     System.Media.SoundPlayer winner = new System.Media.SoundPlayer(Properties.Resources.victory);
                     winner.Play();
                     gameState = false;
+                    break;
+
+                case (int)CMaquina.estados.BUSQUEDA:
+                    e.Graphics.DrawString("Estado: Buscando", fuente, brocha, 10, 10);
+                    play_found = true;
+                    break;
+
+                case (int)CMaquina.estados.NBUSQUEDA:
+                    e.Graphics.DrawString("Estado: Encontró", fuente, brocha, 10, 10);
+                    if (play_found)
+                    {
+                        System.Media.SoundPlayer found = new System.Media.SoundPlayer(Properties.Resources.found);
+                        found.PlaySync();
+                        play_found = false;
+                    }
+                    break;
+
+                case (int)CMaquina.estados.IRBATERIA:
+                    e.Graphics.DrawString("Estado: Poca energía", fuente, brocha, 10, 10);
+                    if (play_low_battery)
+                    {
+                        System.Media.SoundPlayer low_battery = new System.Media.SoundPlayer(Properties.Resources.low_battery);
+                        low_battery.PlaySync();
+                        play_low_battery = false;
+                    }
+                    break;
+
+                case (int)CMaquina.estados.RECARGAR:
+                    e.Graphics.DrawString("Estado: Recargando", fuente, brocha, 10, 10);
+                    System.Media.SoundPlayer charging = new System.Media.SoundPlayer(Properties.Resources.charging);
+                    charging.Play();
+                    play_low_battery = true;
                     break;
 
                 default:

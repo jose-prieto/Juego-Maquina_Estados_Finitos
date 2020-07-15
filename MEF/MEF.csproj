@@ -100,6 +100,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="App.ico" />
+    <None Include="Resources\found.wav" />
+    <None Include="Resources\low_battery.wav" />
     <None Include="Resources\dry-tree.png" />
     <None Include="Resources\died.wav" />
     <None Include="Resources\victory.wav" />
@@ -113,6 +115,7 @@
     <None Include="Resources\apple.png" />
     <None Include="Resources\battery.png" />
     <None Include="Resources\cesta.png" />
+    <None Include="Resources\charging.wav" />
     <Content Include="Resources\cherry.png" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
