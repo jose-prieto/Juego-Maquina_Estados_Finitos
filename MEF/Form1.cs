@@ -176,9 +176,10 @@ namespace MEF
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
             this.Name = "Form1";
-            this.Text = "Maquina de estados finitos";
+            this.Text = "Fruit Ninja";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
+
         }
         #endregion
 
