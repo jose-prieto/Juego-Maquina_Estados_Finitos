@@ -20,13 +20,12 @@ namespace MEF
 		// Enumeracion de los diferentes estados
 		public enum  estados
 		{
-			BUSQUEDA,
-			NBUSQUEDA,
-			IRBATERIA,
-			RECARGAR,
+			BUSCANDO,
+			ENCONTRO,
+			POCABATERIA,
+			RECARGANDO,
 			MUERTO,
-			ALEATORIO,
-			
+			GANADOR,
 		};
 
 		// Esta variable representa el estado actual de la maquina
@@ -72,11 +71,11 @@ namespace MEF
 
 			// Inicializamos las variables
 
-			Estado=(int)estados.NBUSQUEDA;	// Colocamos el estado de inicio.
+			Estado=(int)estados.ENCONTRO;	// Colocamos el estado de inicio.
 			x=320;		// Coordenada X
 			y=240;		// Coordenada Y
 			indice=-1;	// Empezamos como si no hubiera objeto a buscar
-			energia=800;
+			energia=800;//valor energético inicial
 		}
 
 		public void Inicializa(ref S_objeto [] Pobjetos, S_objeto [] Pbateria)
@@ -95,7 +94,7 @@ namespace MEF
 			
 			switch(Estado)
 			{
-				case (int)estados.BUSQUEDA:
+				case (int)estados.BUSCANDO:
 					// Llevamos a cabo la accion del estado
 					Busqueda();
 
@@ -106,45 +105,45 @@ namespace MEF
 						objetos[indice].activo=false;
 						
 						// Cambiamos de estado
-						Estado=(int)estados.NBUSQUEDA;
+						Estado=(int)estados.ENCONTRO;
 
 					}
 					else if(energia<400) // Checamos condicion de transicion
-						Estado=(int)estados.IRBATERIA;
+						Estado=(int)estados.POCABATERIA;
 
 					break;
 
-				case (int)estados.NBUSQUEDA:
+				case (int)estados.ENCONTRO:
 					// Llevamos a cabo la accion del estado
 					NuevaBusqueda();
 
 					// Verificamos por transicion
 					if(indice==-1)	// Si ya no hay objetos, entonces aleatorio
-						Estado=(int)estados.ALEATORIO;
+						Estado=(int)estados.GANADOR;
 					else
-						Estado=(int)estados.BUSQUEDA;
+						Estado=(int)estados.BUSCANDO;
 
 					break;
 					
-				case (int)estados.IRBATERIA:
+				case (int)estados.POCABATERIA:
 					// Llevamos a cabo la accion del estado
 					IrBateria();
 
 					// Verificamos por transicion
 					if(x==bateria[0].x && y==bateria[0].y)				
-						Estado=(int)estados.RECARGAR;
+						Estado=(int)estados.RECARGANDO;
 
 					if(energia==0)
 						Estado=(int)estados.MUERTO;
 
 					break;
 
-				case (int)estados.RECARGAR:
+				case (int)estados.RECARGANDO:
 					// Llevamos a cabo la accion del estado
 					Recargar();
 
 					// Hacemos la transicion
-					Estado=(int)estados.BUSQUEDA;
+					Estado=(int)estados.BUSCANDO;
 
 					break;
 
@@ -156,7 +155,7 @@ namespace MEF
 					
 					break;
 
-				case (int)estados.ALEATORIO:
+				case (int)estados.GANADOR:
 					// Llevamos a cabo la accion del estado
 					Aleatorio();
 

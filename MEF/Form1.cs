@@ -61,11 +61,12 @@ namespace MEF
                 ListaObjetos[n].img = new Bitmap(imgResource[randomFruit]);
             }
 
-            // Colocamos la bateria
+            // Colocamos las coordenadas de la bateria
             MiBateria[0].x = random.Next(0, 639);
             MiBateria[0].y = random.Next(50, 479);
-            check_exist(MiBateria, random, 0);
+            // activamos el objeto bateria
             MiBateria[0].activo = true;
+            //colocamos la respectiva imagen a batería
             MiBateria[0].img = new Bitmap(Properties.Resources.battery);
 
             maquina.Inicializa(ref ListaObjetos, MiBateria);
@@ -292,19 +293,19 @@ namespace MEF
                     gameState = false;
                     break;
 
-                case (int)CMaquina.estados.ALEATORIO:
+                case (int)CMaquina.estados.GANADOR:
                     e.Graphics.DrawString("Estado: Ganador", fuente, brocha, 10, 10);
                     System.Media.SoundPlayer winner = new System.Media.SoundPlayer(Properties.Resources.victory);
                     winner.Play();
                     gameState = false;
                     break;
 
-                case (int)CMaquina.estados.BUSQUEDA:
+                case (int)CMaquina.estados.BUSCANDO:
                     e.Graphics.DrawString("Estado: Buscando", fuente, brocha, 10, 10);
                     play_found = true;
                     break;
 
-                case (int)CMaquina.estados.NBUSQUEDA:
+                case (int)CMaquina.estados.ENCONTRO:
                     e.Graphics.DrawString("Estado: Encontró", fuente, brocha, 10, 10);
                     if (play_found)
                     {
@@ -314,7 +315,7 @@ namespace MEF
                     }
                     break;
 
-                case (int)CMaquina.estados.IRBATERIA:
+                case (int)CMaquina.estados.POCABATERIA:
                     e.Graphics.DrawString("Estado: Poca energía", fuente, brocha, 10, 10);
                     if (play_low_battery)
                     {
@@ -324,7 +325,7 @@ namespace MEF
                     }
                     break;
 
-                case (int)CMaquina.estados.RECARGAR:
+                case (int)CMaquina.estados.RECARGANDO:
                     e.Graphics.DrawString("Estado: Recargando", fuente, brocha, 10, 10);
                     System.Media.SoundPlayer charging = new System.Media.SoundPlayer(Properties.Resources.charging);
                     charging.PlaySync();
