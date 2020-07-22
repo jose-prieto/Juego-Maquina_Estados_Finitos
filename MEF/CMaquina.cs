@@ -189,16 +189,23 @@ namespace MEF
 			{
 				if (objetos[n].activo == true)
 				{
-					indice = n;
-					break;
-				}
+					if (indice == -1) //si encuentra objeto activo y aun indice no tiene nada
+                    {                 //asignado toma directamente el valor de n
+						indice = n;
+					}//en caso contrario revisa si el nuevo objeto activo esta mas cerca
+					else if (Math.Abs(objetos[n].x - x) + Math.Abs(objetos[n].y - y) <
+							Math.Abs(objetos[indice].x - x) + Math.Abs(objetos[indice].y - y))
+                    {
+						//de estarlo cambiar el valor del indice a la posicion del nuevo objeto
+						indice = n;
+                    }
+                }
 			}
 		}
 
 		public void IrBateria()
 		{
 			// En esta funcion colocamos la logica del estado Ir Bateria
-
 			// Nos dirigimos hacia la bateria
 			if(x<bateria[0].x)
 				x++;
@@ -209,17 +216,16 @@ namespace MEF
 				y++;
 			else if(y>bateria[0].y)
 				y--;
-
 			// Disminuimos la energia
 			energia--;
-
 		}
 
 		public void Recargar()
 		{
 			// En esta funcion colocamos la logica del estado Recargar
 			energia=800;
-
+			//vuelve a calcular "NuevaBusqueda()" para saber cual fruta esta mas cerca
+			NuevaBusqueda();
 		}
 	}
 }
