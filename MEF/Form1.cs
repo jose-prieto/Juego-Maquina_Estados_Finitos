@@ -25,7 +25,7 @@ namespace MEF
         // Objetos necesarios
         public S_objeto[] ListaObjetos = new S_objeto[10];
         public S_objeto[] MiBateria = new S_objeto[1];
-        public S_objeto MiCesta;
+        public S_objeto MiNinja;
         public bool gameState = true;
         public bool play_low_battery = true;
         public bool play_found = false;
@@ -45,18 +45,20 @@ namespace MEF
             // Cremos un objeto para tener valores aleatorios
             Random random = new Random();
 
-            // Recorremos todos los objetos
+            // Recorremos todas las frutas
             for (int n = 0; n < 10; n++)
             {
                 // Colocamos las coordenadas
                 ListaObjetos[n].x = random.Next(0, 639);
                 ListaObjetos[n].y = random.Next(50, 479);
+                // se verifica que la fruta que se esta creando no se solape con alguna otra
                 check_exist(ListaObjetos, random, n);
                 // Lo indicamos activo
                 ListaObjetos[n].activo = true;
 
-                // Seteamos la imagen
-                Bitmap[] imgResource = { Properties.Resources.apple, Properties.Resources.cherry, Properties.Resources.raspberry, Properties.Resources.strawberry };
+                // Asignamos la imagen que llevará la fruta
+                Bitmap[] imgResource = { Properties.Resources.apple, Properties.Resources.cherry, 
+                                        Properties.Resources.raspberry, Properties.Resources.strawberry };
                 int randomFruit = random.Next(imgResource.Length);
                 ListaObjetos[n].img = new Bitmap(imgResource[randomFruit]);
             }
@@ -64,13 +66,15 @@ namespace MEF
             // Colocamos las coordenadas de la bateria
             MiBateria[0].x = random.Next(0, 639);
             MiBateria[0].y = random.Next(50, 479);
+            //se verifica que la bateria no se solape con otro objeto
+            check_exist(ListaObjetos, random, 9);
             // activamos el objeto bateria
             MiBateria[0].activo = true;
             //colocamos la respectiva imagen a batería
             MiBateria[0].img = new Bitmap(Properties.Resources.battery);
 
+            //iniciamos la máquina de estados finitos
             maquina.Inicializa(ref ListaObjetos, MiBateria);
-
 
         }
 
@@ -81,10 +85,11 @@ namespace MEF
             while (!exist)
             {
                 for (int k = 0; k < n + 1; k++)
-                {
+                {//con esto se evita que los objetos se solapen entre sí evitando errores en el autómata finito
                     if (ListaObjetos[k].x - 30 <= ListaObjetos[n].x && ListaObjetos[n].x <= ListaObjetos[k].x + 30
                         && ListaObjetos[k].y - 30 <= ListaObjetos[n].y && ListaObjetos[n].y <= ListaObjetos[k].y + 30)
                     {
+                        //en caso de solapar cambia su posición
                         ListaObjetos[n].x = random.Next(0, 639);
                         ListaObjetos[n].y = random.Next(50, 479);
                     }
@@ -93,18 +98,6 @@ namespace MEF
                 }
                 exist = true;
             }
-        }
-        
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-            }
-            base.Dispose(disposing);
         }
 
         #region Código generado por el Diseñador de Windows Forms
@@ -234,15 +227,15 @@ namespace MEF
             SolidBrush brochaNegra = new SolidBrush(Color.Black);
             SolidBrush brochaRoja = new SolidBrush(Color.Red);
             SolidBrush brochaNaranja = new SolidBrush(Color.Orange);
-            MiCesta.activo = true;
-            MiCesta.img = new Bitmap(Properties.Resources.cesta);
+            MiNinja.activo = true;
+            MiNinja.img = new Bitmap(Properties.Resources.cesta);
 
-            // Dibujamos los objetos
+            // Dibujamos las frutas
             for (int n = 0; n < 10; n++)
             {
-                if (ListaObjetos[n].activo == true)
+                if (ListaObjetos[n].activo == true) //de estar activo dibuja la fruta
                     e.Graphics.DrawImage(ListaObjetos[n].img, ListaObjetos[n].x - 4, ListaObjetos[n].y - 4, 20, 20);
-                else
+                else //de lo contrario dibuja un arbol seco en lugar de la fruta
                     e.Graphics.DrawImage(Properties.Resources.dry_tree, ListaObjetos[n].x - 4, ListaObjetos[n].y - 4, 20, 20);
             }
 
@@ -251,61 +244,59 @@ namespace MEF
 
             
 
-            // Indicamos la energia de la culebrita
+            // Indicamos la energia del ninja
             e.Graphics.DrawImage(Properties.Resources.energy, this.Width - 130, 10, 20, 20);
-            if (maquina.getEnergia <= 200)
+            if (maquina.getEnergia <= 200) //barra de energía roja si <= 200
             {
                 e.Graphics.DrawRectangle(Pens.Red, this.Width - 110, 12, 80, 10);
                 e.Graphics.FillRectangle(brochaRoja, this.Width - 110, 12, maquina.getEnergia / 10, 10);
             }
-            else if (maquina.getEnergia <= 400)
+            else if (maquina.getEnergia <= 400) //barra de energía anaranjada si <= 400
             {
                 e.Graphics.DrawRectangle(Pens.Orange, this.Width - 110, 12, 80, 10);
                 e.Graphics.FillRectangle(brochaNaranja, this.Width - 110, 12, maquina.getEnergia / 10, 10);
             }
-            else
+            else //barra de energía amarilla si ninguna de las anteriores se cumplen
             {
                 e.Graphics.DrawRectangle(Pens.Yellow, this.Width - 110, 12, 80, 10);
                 e.Graphics.FillRectangle(brochaAmarilla, this.Width - 110, 12, maquina.getEnergia / 10, 10);
             }
 
-            // Dibujamos el robot
-            if (maquina.EstadoM == (int)CMaquina.estados.MUERTO)
-            {
-                e.Graphics.FillRectangle(brochaNegra, 0, 0, this.Width, this.Height);
-                e.Graphics.DrawString("YOU DIED", new Font("Times New Roman", 30), new SolidBrush(Color.Red), this.Width / 2 - 100, this.Height / 2 - 60);
-                // Sonamos un beep de la computadora
-                System.Media.SoundPlayer gameover = new System.Media.SoundPlayer(Properties.Resources.died);
-                gameover.Play();
-                gameState = false;
-            }
-            else
-                e.Graphics.DrawImage(MiCesta.img, maquina.CoordX - 4, maquina.CoordY - 4);
+            e.Graphics.DrawImage(MiNinja.img, maquina.CoordX - 4, maquina.CoordY - 4); //Dibujamos al ninja
 
             switch (maquina.EstadoM)
             {
                 case (int)CMaquina.estados.MUERTO:
+                    //se dibuja rectangulo negro
                     e.Graphics.FillRectangle(brochaNegra, 0, 0, this.Width, this.Height);
-                    e.Graphics.DrawString("YOU DIED", new Font("Times New Roman", 30), new SolidBrush(Color.Red), this.Width / 2 - 100, this.Height / 2 - 60);
+                    //se escribe "you died"
+                    e.Graphics.DrawString("YOU DIED", new Font("Times New Roman", 30), new SolidBrush(Color.Red),
+                                                                this.Width / 2 - 100, this.Height / 2 - 60);
                     // Sonamos un beep de la computadora
                     System.Media.SoundPlayer gameover = new System.Media.SoundPlayer(Properties.Resources.died);
                     gameover.Play();
+                    //se le indica a la máquina que el juego ha terminado
                     gameState = false;
                     break;
 
                 case (int)CMaquina.estados.GANADOR:
+                    //se escribe estado actual
                     e.Graphics.DrawString("Estado: Ganador", fuente, brocha, 10, 10);
+                    // sonamos beep de victoria
                     System.Media.SoundPlayer winner = new System.Media.SoundPlayer(Properties.Resources.victory);
                     winner.Play();
+                    //se le indica a la máquina que el juego ha terminado
                     gameState = false;
                     break;
 
                 case (int)CMaquina.estados.BUSCANDO:
+                    //se escribe estado actual
                     e.Graphics.DrawString("Estado: Buscando", fuente, brocha, 10, 10);
                     play_found = true;
                     break;
 
                 case (int)CMaquina.estados.ENCONTRO:
+                    //se escribe estado actual
                     e.Graphics.DrawString("Estado: Encontró", fuente, brocha, 10, 10);
                     if (play_found)
                     {
@@ -316,6 +307,7 @@ namespace MEF
                     break;
 
                 case (int)CMaquina.estados.POCABATERIA:
+                    //se escribe estado actual
                     e.Graphics.DrawString("Estado: Poca energía", fuente, brocha, 10, 10);
                     if (play_low_battery)
                     {
@@ -326,16 +318,12 @@ namespace MEF
                     break;
 
                 case (int)CMaquina.estados.RECARGANDO:
+                    //se escribe estado actual
                     e.Graphics.DrawString("Estado: Recargando", fuente, brocha, 10, 10);
                     System.Media.SoundPlayer charging = new System.Media.SoundPlayer(Properties.Resources.charging);
                     charging.PlaySync();
                     play_low_battery = true;
                     break;
-
-                default:
-                    e.Graphics.DrawImage(MiCesta.img, maquina.CoordX - 4, maquina.CoordY - 4);
-                    break;
-
             }
         }
     }

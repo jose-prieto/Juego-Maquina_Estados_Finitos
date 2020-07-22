@@ -114,14 +114,14 @@ namespace MEF
 					break;
 
 				case (int)estados.ENCONTRO:
-					// Llevamos a cabo la accion del estado
+					// Revisamos si hay o no hay objetos
 					NuevaBusqueda();
 
 					// Verificamos por transicion
-					if(indice==-1)	// Si ya no hay objetos, entonces aleatorio
+					if(indice==-1)	// Si ya no hay objetos, entonces GANADOR
 						Estado=(int)estados.GANADOR;
 					else
-						Estado=(int)estados.BUSCANDO;
+						Estado=(int)estados.BUSCANDO;  //si hay objetos, entonces BUSCANDO
 
 					break;
 					
@@ -130,7 +130,7 @@ namespace MEF
 					IrBateria();
 
 					// Verificamos por transicion
-					if(x==bateria[0].x && y==bateria[0].y)				
+					if(x==bateria[0].x && y==bateria[0].y)	
 						Estado=(int)estados.RECARGANDO;
 
 					if(energia==0)
@@ -148,21 +148,11 @@ namespace MEF
 					break;
 
 				case (int)estados.MUERTO:
-					// Llevamos a cabo la accion del estado
-					Muerto();
-
-					// No hay condicion de transicion
-					
+					//termina el juego (Derota)
 					break;
 
 				case (int)estados.GANADOR:
-					// Llevamos a cabo la accion del estado
-					Aleatorio();
-
-					// Verificamos por transicion
-					if(energia==0)
-						Estado=(int)estados.MUERTO;
-
+					//termina el juego (victoria)
 					break;
 
 			}
@@ -174,14 +164,14 @@ namespace MEF
 			// En esta funcion colocamos la logica del estado Busqueda
 			
 			// Nos dirigimos hacia el objeto actual
-			if(x<objetos[indice].x)
-				x++;
-			else if(x>objetos[indice].x)
+			if(x<objetos[indice].x) //cambiamos el valor de x dependiendo si el
+				x++;                //objeto está más a la derecha o izquierda
+			else if(x>objetos[indice].x)//del objeto ninja
 				x--;
 
-			if(y<objetos[indice].y)
-				y++;
-			else if(y>objetos[indice].y)
+			if(y<objetos[indice].y) //cambiamos el valor de y dependiendo si el
+				y++;                //objeto está más a la arriba o abajo
+			else if(y>objetos[indice].y)//del objeto ninja
 				y--;
 
 			// Disminuimos la energia
@@ -192,33 +182,17 @@ namespace MEF
 		public void NuevaBusqueda()
 		{
 			// En esta funcion colocamos la logica del estado Nueva Busqueda
-			// Verificamos que haya otro objeto a buscar
+			// iniciamos indice en -1, si cambia de valor hay objeto
 			indice=-1;
-
 			// Recorremos el arreglo buscando algun objeto activo
-			for(int n=0;n<10;n++)
+			for (int n = 0; n < 10; n++)
 			{
-				if(objetos[n].activo==true)
-					indice=n;
+				if (objetos[n].activo == true)
+				{
+					indice = n;
+					break;
+				}
 			}
-		}
-
-		public void Aleatorio()
-		{
-			// En esta funcion colocamos la logica del estado Aleatorio
-			// Se mueve al azar
-
-			// Cremos un objeto para tener valores aleatorios
-			Random random=new Random();
-
-			int nx=random.Next(0,3);
-			int ny=random.Next(0,3);
-
-			// Modificamos la posicion al azar
-			x+=nx-1;
-			y+=ny-1;
-
-			energia--;
 		}
 
 		public void IrBateria()
@@ -247,14 +221,5 @@ namespace MEF
 			energia=800;
 
 		}
-
-		public void Muerto()
-		{
-			// En esta funcion colocamos la logica del estado Muerto
-
-		}
-
-
-
 	}
 }
